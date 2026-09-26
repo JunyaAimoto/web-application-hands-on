@@ -1,0 +1,3 @@
+package com.example.taskapp.dto;
+import java.time.LocalDateTime; import java.util.Map;
+public record ErrorResponse(LocalDateTime timestamp,int status,String code,String message,Map<String,String> errors){}
