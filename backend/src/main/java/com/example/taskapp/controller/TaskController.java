@@ -8,5 +8,4 @@ public class TaskController {
  @PostMapping public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskRequest r){return ResponseEntity.status(201).body(service.create(r));}
  @PutMapping("/{id}") public TaskResponse update(@PathVariable Long id,@Valid @RequestBody TaskRequest r){return service.update(id,r);}
  @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id){service.delete(id);return ResponseEntity.noContent().build();}
- @GetMapping("/summary") public SummaryResponse summary(){return service.summary();}
 }
