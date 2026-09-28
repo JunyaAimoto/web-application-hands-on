@@ -33,7 +33,7 @@ export default function Form(){
     const x={title:title.trim(),description:desc,userId:Number(user),status,dueDate:due};
     const r=edit?await updateTask(Number(id),x):await createTask(x);
     nav('/tasks/'+r.id)};
-    return 
+    return (
         <section>
             <h1>{edit?'タスク編集':'タスク登録'}</h1>
             <form onSubmit={submit} className="form">
@@ -68,4 +68,5 @@ export default function Form(){
                 <button>保存</button>
             </form>
         </section>
+    );
 }

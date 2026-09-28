@@ -13,7 +13,7 @@ export default function Detail(){
     if(!t)
         return 
             <p>読み込み中...</p>;
-        return 
+        return (
             <section>
                 <h1>タスク詳細</h1>
                 <dl className="detail">
@@ -37,4 +37,5 @@ export default function Detail(){
                     }
                 }}>削除</button>
             </section>
+        );
 }
