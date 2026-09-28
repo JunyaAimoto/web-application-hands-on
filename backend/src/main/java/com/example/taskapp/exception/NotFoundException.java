@@ -1,2 +1,5 @@
 package com.example.taskapp.exception;
-public class NotFoundException extends RuntimeException { public NotFoundException(String m){super(m);} }
+
+public class NotFoundException extends RuntimeException { 
+    public NotFoundException(String m){super(m);} 
+}
