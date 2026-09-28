@@ -1,19 +1,16 @@
-# IK Webアプリ開発課題・完成版
+# IK Webアプリ開発課題：STEP 1 開始状態
 
-レビュー者が保持するマスター完成版です。
+このプロジェクトは、STEP 1「ダッシュボード」を開始するためのベースソースです。
 
-## 構成
-- frontend: React + TypeScript + Vite
-- backend: Java 21 + Spring Boot + Spring Data JPA
-- database: PostgreSQL
-- environment: Docker Compose
+## 開始時点で含まれるもの
+- React + TypeScript + Viteの実行環境
+- Spring Boot + Java 21の実行環境
+- PostgreSQL（Docker Compose）
+- users / tasksテーブルと初期データ
+- Spring Bootのヘルスチェック `/api/health`
+- ダッシュボード画面の空の土台
+- タスク一覧画面の空の土台
 
-## 起動
-1. `docker compose up -d`
-2. `cd backend` → `mvn spring-boot:run`
-3. 別ターミナルで `cd frontend` → `npm install` → `npm run dev`
-
-Frontend: http://localhost:5173
-Backend health: http://localhost:8080/api/health
-
-DB: task_management / task_user / task_password / 5432
+## 課題開始時の注意
+STEP 1以降で実装する機能は、まだ実装されていません。
+課題書のSTEP 1から順番に実装してください。
