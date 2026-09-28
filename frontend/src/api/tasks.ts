@@ -1,1 +1,18 @@
-import{api}from'./client';import type{Task,TaskRequest,TaskStatus,Summary}from'../types/task';export const getTasks=(p?:{keyword?:string;status?:TaskStatus;userId?:number})=>{const q=new URLSearchParams();if(p?.keyword)q.set('keyword',p.keyword);if(p?.status)q.set('status',p.status);if(p?.userId)q.set('userId',String(p.userId));return api<Task[]>('/api/tasks'+(q.toString()?'?'+q:''))};export const getTask=(id:number)=>api<Task>('/api/tasks/'+id);export const createTask=(x:TaskRequest)=>api<Task>('/api/tasks',{method:'POST',body:JSON.stringify(x)});export const updateTask=(id:number,x:TaskRequest)=>api<Task>('/api/tasks/'+id,{method:'PUT',body:JSON.stringify(x)});export const deleteTask=(id:number)=>api<void>('/api/tasks/'+id,{method:'DELETE'});export const getSummary=()=>api<Summary>('/api/tasks/summary')
+import{api}from'./client';
+import type{Task,TaskRequest,TaskStatus}from'../types/task';
+
+export interface Summary { total:number; todo:number; doing:number; done:number }
+
+export const getTasks=(p?:{keyword?:string;status?:TaskStatus;userId?:number})=>{
+    const q=new URLSearchParams();
+    if(p?.keyword)q.set('keyword',p.keyword);
+    if(p?.status)q.set('status',p.status);
+    if(p?.userId)q.set('userId',String(p.userId));
+    return api<Task[]>('/api/tasks'+(q.toString()?'?'+q:''))
+};
+export const getTask=(id:number)=>api<Task>('/api/tasks/'+id);
+export const createTask=(x:TaskRequest)=>api<Task>('/api/tasks',{method:'POST',body:JSON.stringify(x)});
+export const updateTask=(id:number,x:TaskRequest)=>api<Task>('/api/tasks/'+id,{method:'PUT',body:JSON.stringify(x)});
+export const deleteTask=(id:number)=>api<void>('/api/tasks/'+id,{method:'DELETE'});
+export const getSummary = () => api<Summary>('/api/tasks/summary');
+

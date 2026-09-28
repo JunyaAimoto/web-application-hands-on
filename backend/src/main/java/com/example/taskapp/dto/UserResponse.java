@@ -1,2 +1,5 @@
 package com.example.taskapp.dto;
-public record UserResponse(Long id,String name,String email,String department){}
+
+public record UserResponse(Long id,String name,String email,String department){
+    
+}

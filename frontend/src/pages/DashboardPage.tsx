@@ -1,1 +1,8 @@
-import{useEffect,useState}from'react';import{getSummary}from'../api/tasks';export default function Dashboard(){const[s,setS]=useState<any>();useEffect(()=>{getSummary().then(setS)},[]);return <section><h1>ダッシュボード</h1><div className="cards">{[['総タスク数',s?.total],['TODO',s?.todo],['DOING',s?.doing],['DONE',s?.done]].map(x=><div className="card" key={x[0]}><span>{x[0]}</span><b>{x[1]??'-'}</b></div>)}</div></section>}
+export default function Dashboard() {
+  return (
+    <section className="container">
+      <h1>ダッシュボード</h1>
+      <p>ここにタスク件数を表示してください。</p>
+    </section>
+  );
+}
