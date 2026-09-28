@@ -1,1 +1,72 @@
-import{useEffect,useState}from'react';import{Link,useSearchParams}from'react-router-dom';import{getTasks}from'../api/tasks';import type{TaskStatus}from'../types/task';export default function List(){const[p,setP]=useSearchParams();const[t,setT]=useState<any[]>([]);const[k,setK]=useState(p.get('keyword')||'');const[s,setS]=useState<any>(p.get('status')||'');const[u,setU]=useState(p.get('userId')||'');useEffect(()=>{getTasks({keyword:p.get('keyword')||undefined,status:(p.get('status')||undefined) as TaskStatus,userId:p.get('userId')?Number(p.get('userId')):undefined}).then(setT)},[p]);const search=()=>{const q=new URLSearchParams();if(k)q.set('keyword',k);if(s)q.set('status',s);if(u)q.set('userId',u);setP(q)};return <section><h1>タスク一覧</h1><div className="filters"><input value={k} onChange={e=>setK(e.target.value)} placeholder="キーワード"/><select value={s} onChange={e=>setS(e.target.value)}><option value="">すべて</option><option>TODO</option><option>DOING</option><option>DONE</option></select><select value={u} onChange={e=>setU(e.target.value)}><option value="">担当者：すべて</option><option value="1">山田 太郎</option><option value="2">佐藤 花子</option><option value="3">鈴木 一郎</option></select><button onClick={search}>検索</button><Link className="btn" to="/tasks/new">新規登録</Link></div>{t.length?<table><thead><tr><th>ID</th><th>タイトル</th><th>担当者</th><th>ステータス</th><th>期限</th></tr></thead><tbody>{t.map(x=><tr key={x.id}><td>{x.id}</td><td><Link to={'/tasks/'+x.id}>{x.title}</Link></td><td>{x.userName}</td><td>{x.status}</td><td>{x.dueDate||'-'}</td></tr>)}</tbody></table>:<p className="empty">該当するタスクがありません。</p>}</section>}
+const tasks = [
+  {
+    id: 1,
+    title: '資料を作成する',
+    userName: '山田太郎',
+    status: 'TODO',
+    dueDate: '2026-10-05',
+    updatedAt: '2026-10-01 10:00',
+  },
+  {
+    id: 2,
+    title: 'レビューを実施する',
+    userName: '佐藤花子',
+    status: 'DOING',
+    dueDate: '2026-10-07',
+    updatedAt: '2026-10-01 11:00',
+  },
+  {
+    id: 3,
+    title: 'テストを実施する',
+    userName: '鈴木一郎',
+    status: 'DONE',
+    dueDate: '2026-10-03',
+    updatedAt: '2026-10-01 12:00',
+  },
+];
+
+export default function Tasks() {
+  return (
+    <section className="container">
+      <h1>タスク一覧</h1>
+       <div>
+        <a href="/tasks/new">タスクを登録する</a>
+      </div>
+      {
+        tasks.length ?
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>タイトル</th>
+              <th>担当者</th>
+              <th>ステータス</th>
+              <th>期限</th>
+              <th>更新日時</th>
+              <th>詳細</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {
+              tasks.map((task) => (
+                <tr key={task.id}>
+                  <td>{task.id}</td>
+                  <td>{task.title}</td>
+                  <td>{task.userName}</td>
+                  <td>{task.status}</td>
+                  <td>{task.dueDate}</td>
+                  <td>{task.updatedAt}</td>
+                  <td>
+                    <a href={`/tasks/${task.id}`}>詳細</a>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        : <p className="empty">該当するタスクがありません。</p>
+      }
+    </section>
+  );
+}
