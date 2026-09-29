@@ -55,6 +55,7 @@ export default function Tasks() {
         setLoading(false);
       }
     };
+
     loadTasks();
   }, [keyword, status, userId]);
 

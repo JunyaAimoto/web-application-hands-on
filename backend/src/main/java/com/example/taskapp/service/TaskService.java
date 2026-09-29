@@ -98,4 +98,28 @@ public class TaskService {
         return TaskResponse.from(saved);
     }
 
+    @Transactional
+    public TaskResponse update(Long id, TaskRequest request) {
+
+        Task task = tasks.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException("タスクが見つかりません。"));
+
+        User user = users.findById(request.getUserId())
+                .orElseThrow(() ->
+                        new NotFoundException("担当者が見つかりません。"));
+
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setUser(user);
+        task.setStatus(request.getStatus());
+        task.setDueDate(request.getDueDate());
+
+        task.setUpdatedAt(LocalDateTime.now());
+
+        Task saved = tasks.save(task);
+
+        return TaskResponse.from(saved);
+    }
+
 }

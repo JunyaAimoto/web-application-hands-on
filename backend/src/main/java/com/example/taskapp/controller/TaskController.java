@@ -3,18 +3,24 @@ package com.example.taskapp.controller;
 import com.example.taskapp.dto.SummaryResponse;
 import com.example.taskapp.dto.TaskResponse;
 import com.example.taskapp.dto.TaskRequest;
+import com.example.taskapp.dto.TaskResponse;
 import com.example.taskapp.service.TaskService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.taskapp.dto.TaskResponse;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
@@ -59,6 +65,14 @@ public class TaskController {
         return ResponseEntity
                 .created(URI.create("/api/tasks/" + response.id()))
                 .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public TaskResponse update(
+            @PathVariable Long id,
+            @Valid @RequestBody TaskRequest request
+    ) {
+        return service.update(id, request);
     }
 
 }
