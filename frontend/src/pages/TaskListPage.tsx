@@ -47,6 +47,7 @@ export default function Tasks() {
           status: status || undefined,
           userId: userId ? Number(userId) : undefined
         });
+
         setTasks(data);
       } catch (e) {
         setError('タスク一覧の取得に失敗しました。');

@@ -31,4 +31,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
         @Param("status") TaskStatus status,
         @Param("userId") Long userId
     );
+
 }

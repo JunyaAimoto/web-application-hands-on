@@ -1,23 +1,32 @@
 package com.example.taskapp.service;
 
 import com.example.taskapp.dto.SummaryResponse;
+import com.example.taskapp.dto.TaskRequest;
 import com.example.taskapp.dto.TaskResponse;
 import com.example.taskapp.entity.Task;
 import com.example.taskapp.entity.TaskStatus;
+import com.example.taskapp.entity.User;
 import com.example.taskapp.exception.NotFoundException;
 import com.example.taskapp.repository.TaskRepository;
+import com.example.taskapp.repository.UserRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 public class TaskService {
     private final TaskRepository tasks;
+    private final UserRepository users;
 
-    public TaskService(TaskRepository tasks) {
+    public TaskService(
+        TaskRepository tasks,    
+        UserRepository users
+    ) {
         this.tasks = tasks;
+        this.users = users;
     }
 
     @Transactional(readOnly = true)
@@ -64,4 +73,29 @@ public class TaskService {
             tasks.countByStatus(TaskStatus.DONE)
         ); 
     }
+
+    @Transactional
+    public TaskResponse create(TaskRequest request) {
+
+        User user = users.findById(request.getUserId())
+                .orElseThrow(() ->
+                        new NotFoundException("担当者が見つかりません。"));
+
+        Task task = new Task();
+
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setUser(user);
+        task.setStatus(request.getStatus());
+        task.setDueDate(request.getDueDate());
+
+        LocalDateTime now = LocalDateTime.now();
+        task.setCreatedAt(now);
+        task.setUpdatedAt(now);
+
+        Task saved = tasks.save(task);
+
+        return TaskResponse.from(saved);
+    }
+
 }
