@@ -3,10 +3,10 @@ package com.example.taskapp.controller;
 import com.example.taskapp.dto.SummaryResponse;
 import com.example.taskapp.dto.TaskResponse;
 import com.example.taskapp.dto.TaskRequest;
-
 import com.example.taskapp.service.TaskService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +66,13 @@ public class TaskController {
             @Valid @RequestBody TaskRequest request
     ) {
         return service.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
