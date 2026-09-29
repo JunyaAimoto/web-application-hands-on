@@ -4,6 +4,7 @@ import com.example.taskapp.dto.SummaryResponse;
 import com.example.taskapp.service.TaskService;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,11 @@ public class TaskController {
             @RequestParam(required = false) Long userId
     ) {
         return service.findAll(keyword, status, userId);
+    }
+
+    @GetMapping("/{id}")
+    public TaskResponse findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @GetMapping("/summary")

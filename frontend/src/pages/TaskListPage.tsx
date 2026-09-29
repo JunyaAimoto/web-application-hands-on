@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
 import type { Task } from '../types/task';
 import { getTasks } from '../api/tasks';
 
@@ -8,7 +9,6 @@ export default function Tasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const keyword = searchParams.get('keyword') ?? '';
