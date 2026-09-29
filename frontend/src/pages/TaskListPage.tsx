@@ -49,8 +49,10 @@ export default function Tasks() {
         });
 
         setTasks(data);
-      } catch (e) {
-        setError('タスク一覧の取得に失敗しました。');
+      } catch (e: any) {
+        setError(
+            e?.message ?? 'タスク一覧の取得に失敗しました。'
+        )
       } finally {
         setLoading(false);
       }
