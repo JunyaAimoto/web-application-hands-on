@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import type { Task } from '../types/task';
 import { getTasks } from '../api/tasks';
 
@@ -8,13 +9,44 @@ export default function Tasks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const keyword = searchParams.get('keyword') ?? '';
+  const status = searchParams.get('status') ?? '';
+  const userId = searchParams.get('userId') ?? '';
+  const [keywordInput, setKeywordInput] = useState(keyword);
+  const [statusInput, setStatusInput] = useState(status);
+  const [userIdInput, setUserIdInput] = useState(userId);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    if (keywordInput.trim()) {
+      params.set('keyword', keywordInput.trim());
+    }
+
+    if (statusInput) {
+      params.set('status', statusInput);
+    }
+
+    if (userIdInput) {
+      params.set('userId', userIdInput);
+    }
+
+    setSearchParams(params);
+  };
+
   useEffect(() => {
     const loadTasks = async () => {
       try {
         setLoading(true);
         setError('');
 
-        const data = await getTasks();
+        const data = await getTasks({
+          keyword: keyword || undefined,
+          status: status || undefined,
+          userId: userId ? Number(userId) : undefined
+        });
         setTasks(data);
       } catch (e) {
         setError('タスク一覧の取得に失敗しました。');
@@ -23,13 +55,56 @@ export default function Tasks() {
       }
     };
     loadTasks();
-  }, []);
+  }, [keyword, status, userId]);
 
   return (
     <section className="container">
       <h1>タスク一覧</h1>
-       <div>
-        <a href="/tasks/new">タスクを登録する</a>
+      <div>
+        <div>
+          <label>
+            キーワード：
+            <input
+              type="text"
+              value={keywordInput}
+              onChange={(e) => setKeywordInput(e.target.value)}
+            />
+          </label>
+        </div>
+
+        <div>
+          <label>
+            ステータス：
+            <select
+              value={statusInput}
+              onChange={(e) => setStatusInput(e.target.value)}
+            >
+              <option value="">すべて</option>
+              <option value="TODO">TODO</option>
+              <option value="DOING">DOING</option>
+              <option value="DONE">DONE</option>
+            </select>
+          </label>
+        </div>
+
+        <div>
+          <label>
+            担当者ID：
+            <input
+              type="number"
+              value={userIdInput}
+              onChange={(e) => setUserIdInput(e.target.value)}
+            />
+          </label>
+        </div>
+
+        <button type="button" onClick={handleSearch}>
+          検索
+        </button>
+
+        <div>
+          <a href="/tasks/new">タスクを登録する</a>
+        </div>
       </div>
       {
         tasks.length ?

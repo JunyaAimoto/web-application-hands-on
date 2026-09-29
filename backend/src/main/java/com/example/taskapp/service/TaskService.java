@@ -19,8 +19,27 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskResponse> findAll() {
-    return tasks.findAll()
+    public List<TaskResponse> findAll(
+            String keyword,
+            String status,
+            Long userId
+    ) {
+        String normalizedKeyword =
+            keyword == null || keyword.isBlank()
+                ? ""
+                : keyword.trim();
+
+        TaskStatus taskStatus = null;
+
+        if (status != null && !status.isBlank()) {
+            taskStatus = TaskStatus.valueOf(status);
+        }
+
+        return tasks.search(
+                normalizedKeyword,
+                taskStatus,
+                userId
+            )
             .stream()
             .map(TaskResponse::from)
             .toList();
