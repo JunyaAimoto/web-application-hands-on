@@ -1,7 +1,7 @@
 import{Link,Outlet}from'react-router-dom';
 
 export default function Layout(){
-    return 
+    return (
         <>
             <header>
                 <div className="bar">
@@ -17,4 +17,5 @@ export default function Layout(){
                 <Outlet/>
             </main>
         </>
+    )
 }
