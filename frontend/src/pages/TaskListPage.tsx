@@ -1,36 +1,35 @@
-const tasks = [
-  {
-    id: 1,
-    title: '資料を作成する',
-    userName: '山田太郎',
-    status: 'TODO',
-    dueDate: '2026-10-05',
-    updatedAt: '2026-10-01 10:00',
-  },
-  {
-    id: 2,
-    title: 'レビューを実施する',
-    userName: '佐藤花子',
-    status: 'DOING',
-    dueDate: '2026-10-07',
-    updatedAt: '2026-10-01 11:00',
-  },
-  {
-    id: 3,
-    title: 'テストを実施する',
-    userName: '鈴木一郎',
-    status: 'DONE',
-    dueDate: '2026-10-03',
-    updatedAt: '2026-10-01 12:00',
-  },
-];
+import { useEffect, useState } from 'react';
+import type { Task } from '../types/task'; 
+import { getTasks } from '../api/tasks';
+
 export default function Tasks() {
+
+  const [tasks, setTasks] = useState<Task[]>([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(''); 
+
+  useEffect(() => { 
+    const loadTasks = async () => { 
+      try { 
+        const data = await getTasks(); 
+        setTasks(data); 
+      } catch (e) { 
+        setError('タスク一覧の取得に失敗しました。'); 
+      } finally { 
+        setLoading(false); 
+      } 
+    };
+    loadTasks(); 
+  }, []); 
+
   return (
     <section className="container">
       <h1>タスク一覧</h1>
       <div> 
         <a href="/tasks/new">タスクを登録する</a> 
       </div> 
+      {loading && <p>読み込み中...</p>} 
+      {error && <p>{error}</p>} 
       {
         tasks.length ? 
         <table> 
