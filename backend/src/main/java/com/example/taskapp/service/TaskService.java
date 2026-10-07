@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.example.taskapp.dto.SummaryResponse;
 import com.example.taskapp.entity.TaskStatus;
 import com.example.taskapp.dto.TaskResponse;
+import com.example.taskapp.exception.NotFoundException;
+import com.example.taskapp.entity.Task;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
@@ -36,6 +38,14 @@ public class TaskService {
             .stream()
             .map(TaskResponse::from)
             .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public TaskResponse findById(Long id) {
+        Task task = tasks.findById(id)
+                .orElseThrow(()
+                        -> new NotFoundException("タスクが見つかりません。"));
+        return TaskResponse.from(task);
     }
 
     public SummaryResponse summary() {
