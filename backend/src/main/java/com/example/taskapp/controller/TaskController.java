@@ -2,6 +2,7 @@ package com.example.taskapp.controller;
 
 import com.example.taskapp.service.TaskService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam; 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.taskapp.dto.SummaryResponse;
@@ -18,10 +19,14 @@ public class TaskController {
         this.service = service;
     }
 
-    @GetMapping 
-    public List<TaskResponse> findAll() { 
-        return service.findAll(); 
-    }
+    @GetMapping
+    public List<TaskResponse> findAll(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Long userId
+    ) {
+        return service.findAll(keyword, status, userId);
+    } 
 
     @GetMapping("/summary")
     public SummaryResponse summary() {
