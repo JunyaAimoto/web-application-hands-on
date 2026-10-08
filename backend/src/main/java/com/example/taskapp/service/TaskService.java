@@ -114,4 +114,11 @@ public class TaskService {
         return TaskResponse.from(saved);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        Task task = tasks.findById(id)
+                .orElseThrow(()
+                        -> new NotFoundException("タスクが見つかりません。"));
+        tasks.delete(task);
+    }
 }
