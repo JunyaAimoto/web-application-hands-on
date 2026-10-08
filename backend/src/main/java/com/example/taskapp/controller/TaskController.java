@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import com.example.taskapp.dto.SummaryResponse;
 import com.example.taskapp.dto.TaskResponse; 
 import com.example.taskapp.dto.TaskRequest;
@@ -54,4 +55,11 @@ public class TaskController {
                 .body(response);
     }
 
+    @PutMapping("/{id}")
+    public TaskResponse update(
+            @PathVariable Long id,
+            @Valid @RequestBody TaskRequest request
+    ) {
+        return service.update(id, request);
+    }
 }
