@@ -72,7 +72,7 @@ public class TaskService {
 
         User user = users.findById(request.getUserId())
                 .orElseThrow(()
-                        -> new NotFoundException("担当者が見つかりません。"));
+                        -> new IllegalArgumentException("担当者が見つかりません。"));
 
         Task task = new Task();
 
@@ -99,7 +99,7 @@ public class TaskService {
 
         User user = users.findById(request.getUserId())
                 .orElseThrow(()
-                        -> new NotFoundException("担当者が見つかりません。"));
+                        -> new IllegalArgumentException("担当者が見つかりません。"));
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());

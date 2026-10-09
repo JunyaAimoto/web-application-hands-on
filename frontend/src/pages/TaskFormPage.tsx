@@ -12,30 +12,63 @@ export default function Form(){
     const[user,setUser]=useState('1');
     const[status,setStatus]=useState<any>('TODO');
     const[due,setDue]=useState('');
-    
+    const [error, setError] = useState('');
+
     useEffect(()=>{
-        if(id)getTask(Number(id)).then(
-            x=>{
+        if(id)getTask(Number(id))
+            .then(x => {
                 setT(x);
                 setTitle(x.title);
                 setDesc(x.description||'');
                 setUser(String(x.userId));
                 setStatus(x.status);
                 setDue(x.dueDate||'')
-            }
-        )
+            })
+            .catch((e: any) => {
+                setError(
+                    e?.message ?? 'タスクの取得に失敗しました。'
+                );
+            });
     },[id]);
     
-    const submit=async(e:any)=>{
+    const submit = async (e: any) => {
         e.preventDefault();
-        if(!title.trim())
+
+        if (!title.trim()) {
             return alert('タイトルは必須です。');
-    const x={title:title.trim(),description:desc,userId:Number(user),status,dueDate:due};
-    const r=edit?await updateTask(Number(id),x):await createTask(x);
-    nav('/tasks/'+r.id)};
+        }
+
+        setError('');
+
+        try {
+            const x = {
+                title: title.trim(),
+                description: desc,
+                userId: Number(user),
+                status,
+                dueDate: due
+            };
+
+            const r = edit
+                ? await updateTask(Number(id), x)
+                : await createTask(x);
+
+            nav('/tasks/' + r.id);
+
+        } catch (e: any) {
+            setError(
+                e?.message ?? 'タスクの保存に失敗しました。'
+            );
+        }
+    }; 
     return (
         <section>
             <h1>{edit?'タスク編集':'タスク登録'}</h1>
+            {error && (
+                <p className="error">
+                    {error}
+                </p>
+            )} 
             <form onSubmit={submit} className="form">
                 <label>
                     タイトル

@@ -6,10 +6,27 @@ export default function Detail(){
     const{id}=useParams();
     const nav=useNavigate();
     const[t,setT]=useState<any>();
+    const [error, setError] = useState(''); 
     
-    useEffect(()=>{
-        if(id)getTask(Number(id)).then(setT)
-    },[id]);
+    useEffect(() => {
+        if (!id) return;
+        getTask(Number(id))
+            .then(setT)
+            .catch((e: any) => {
+                setError(
+                    e?.message ?? 'タスク詳細の取得に失敗しました。'
+                );
+            });
+    }, [id]); 
+
+    if (error) {
+        return (
+            <section>
+                <h1>エラー</h1>
+                <p>{error}</p>
+            </section>
+        );
+    }
     if(!t)
         return 
             <p>読み込み中...</p>;
