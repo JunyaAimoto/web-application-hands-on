@@ -48,7 +48,7 @@ export default function Detail(){
                     <dd>{t.dueDate ?? '-'}</dd>
                 </dl> 
                 <Link className="btn" to={'/tasks/'+t.id+'/edit'}>編集</Link> 
-                <button onClick={async()=>{
+                <button className="btn" onClick={async()=>{
                     if(confirm('このタスクを削除しますか？')){
                         await deleteTask(t.id);
                         nav('/tasks')
